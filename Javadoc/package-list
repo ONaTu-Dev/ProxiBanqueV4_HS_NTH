@@ -1,0 +1,7 @@
+
+org.formation.spring.config
+org.formation.spring.controller
+org.formation.spring.dao
+org.formation.spring.entity
+org.formation.spring.service
+org.formation.spring.test
