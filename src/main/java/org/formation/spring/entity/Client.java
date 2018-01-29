@@ -51,8 +51,8 @@ public class Client {
 	//@OneToMany(mappedBy = "client", cascade = { CascadeType.PERSIST })
 	//private Set<Virement> virements = new HashSet<Virement>();
 
-	@OneToMany(mappedBy = "client", cascade = { CascadeType.PERSIST,CascadeType.MERGE })
-	private Set<Virement> virements = new HashSet<Virement>();
+	@OneToMany(mappedBy = "client", cascade = {CascadeType.REMOVE,CascadeType.MERGE})
+	private Set<Operation> virements = new HashSet<Operation>();
 
 	public Client(String nom, String prenom,CompteCourant compteCourant, CompteEpargne compteEpargne, String email,Adresse ad) {
 		super();
@@ -65,10 +65,10 @@ public class Client {
 		
 		
 	}
-	public Set<Virement> getVirements() {
+	public Set<Operation> getVirements() {
 		return virements;
 	}
-	public void setVirements(Set<Virement> virements) {
+	public void setVirements(Set<Operation> virements) {
 		this.virements = virements;
 	}
 	public Client(String nom, String prenom, String email,Adresse ad) {
@@ -178,9 +178,9 @@ public class Client {
 	}
 
 
-	public void addVirement(Virement virement) {
+	public void ajoutVirement(Operation virement) {
+		System.out.println("**********METHODE ADD VIREMENT AAAAAAA*********");
 		virements.add(virement);
-		virement.setClient(this);
 	}
 
 	/**

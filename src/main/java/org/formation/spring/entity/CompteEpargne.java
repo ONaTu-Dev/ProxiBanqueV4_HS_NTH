@@ -17,8 +17,8 @@ public class CompteEpargne extends Compte {
 
 	public static final double TAUX=0.03;
 	private double tauxRemuneration;
-	public CompteEpargne(String numeroCompte, double solde) {
-		super(numeroCompte, solde);
+	public CompteEpargne(double solde) {
+		super(solde);
 		this.tauxRemuneration=TAUX;
 		// TODO Auto-generated constructor stub
 	}

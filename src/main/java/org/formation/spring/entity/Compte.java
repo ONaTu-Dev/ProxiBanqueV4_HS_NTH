@@ -1,6 +1,7 @@
 package org.formation.spring.entity;
 
 import java.sql.Timestamp;
+import java.text.DecimalFormat;
 import java.util.Date;
 
 import javax.persistence.DiscriminatorColumn;
@@ -29,7 +30,8 @@ import javax.persistence.TemporalType;
 @DiscriminatorColumn(name = "compte_type", discriminatorType = DiscriminatorType.STRING)
 @NamedQueries({
 	//@NamedQuery(name = "findCRByClient", query = "select m from Compte m join m.client c where c.id =:id_client and m.compte_type=:COMPTE_COURANT")})
-	@NamedQuery(name = " findAllCompteByClientId ", query = "select m from Compte m join m.client c where c.id =:idclient")})
+	@NamedQuery(name = " findAllCompteByClientId ", query = "select m from Compte m join m.client c where c.id =:idclient"),
+	@NamedQuery(name = " findCompteByNumeroCompte ", query = "select m from Compte m where m.numeroCompte=:numeroCompte"), })
 	
 	
 public abstract class Compte {
@@ -46,10 +48,10 @@ public abstract class Compte {
 
 	public static final String PARTICULIER = "particulier";
 	public static final String ENTREPRISE = "entreprise";
+	
 
-	public Compte(String numeroCompte, double solde) {
+	public Compte(double solde) {
 		super();
-		this.numeroCompte = numeroCompte;
 		this.solde = solde;
 		this.dateOuverture = new Timestamp(System.currentTimeMillis());
 	}
@@ -152,6 +154,8 @@ public abstract class Compte {
 	 */
 	public void setClient(Client client) {
 		this.client = client;
+		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+		this.numeroCompte=""+timestamp.getTime();
 	}
 
 	public String toPrint() {
