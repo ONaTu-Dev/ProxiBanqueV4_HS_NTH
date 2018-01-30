@@ -1,9 +1,11 @@
 package org.formation.spring.dto;
 
 import org.formation.spring.entity.Adresse;
+
 import org.formation.spring.entity.Compte;
 import org.formation.spring.entity.CompteCourant;
 import org.formation.spring.entity.CompteEpargne;
+
 import org.formation.spring.entity.Conseiller;
 
 public class BeanClient {
@@ -13,13 +15,14 @@ public class BeanClient {
 	private String motDePasse;
 	private String login;
 	private String email;
-	//private int idcons =5;
 	private Adresse adresse;
 	private String numCompteCourant;
 	private String numCompteEpargne;
 //	private CompteCourant compteCourant;
 //	private CompteEpargne compteEpargne;
 	
+	
+	private Adresse adresse;
 
 	double soldeCC;
 	double soldeEp;
@@ -27,7 +30,8 @@ public class BeanClient {
 	public BeanClient() {
 	}
 
-	public BeanClient(int id, String nom, String prenom, String motDePasse, String login, String email, int cons,
+
+	public BeanClient(int id, String nom, String prenom, String motDePasse, String login, String email,
 			Adresse adresse, double soldeCC, double soldeEp) {
 		super();
 		this.id = id;
@@ -36,33 +40,16 @@ public class BeanClient {
 		this.motDePasse = motDePasse;
 		this.login = login;
 		this.email = email;
-		//this.idcons = cons;
 		this.adresse = adresse;
 		this.soldeCC = soldeCC;
 		this.soldeEp = soldeEp;
 	}
 
-//	public CompteCourant getCompteCourant() {
-//		return compteCourant;
-//	}
-//
-//	public void setCompteCourant(CompteCourant compteCourant) {
-//		this.compteCourant = compteCourant;
-//	}
-//
-//	public CompteEpargne getCompteEpargne() {
-//		return compteEpargne;
-//	}
-//
-//	public void setCompteEpargne(CompteEpargne compteEpargne) {
-//		this.compteEpargne = compteEpargne;
-//	}
-	
-	
 
 	public int getId() {
 		return id;
 	}
+
 
 	@Override
 	public String toString() {
@@ -87,7 +74,6 @@ public class BeanClient {
 	public void setNumCompteEpargne(String numCompteEpargne) {
 		this.numCompteEpargne = numCompteEpargne;
 	}
-
 	public void setId(int id) {
 		this.id = id;
 	}
@@ -124,15 +110,6 @@ public class BeanClient {
 		this.login = login;
 	}
 
-//	public int getIdcons() {
-//		return idcons;
-//	}
-//
-//	public void setIdcons(int idcons) {
-//		this.idcons = idcons;
-//	}
-
-	
 	public String getEmail() {
 		return email;
 	}
@@ -141,13 +118,6 @@ public class BeanClient {
 		this.email = email;
 	}
 
-//	public int getCons() {
-//		return idcons;
-//	}
-//
-//	public void setCons(int cons) {
-//		this.idcons = cons;
-//	}
 
 	public Adresse getAdresse() {
 		return adresse;

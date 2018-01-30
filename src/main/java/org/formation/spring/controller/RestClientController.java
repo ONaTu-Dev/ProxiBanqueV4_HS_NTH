@@ -40,12 +40,33 @@ public class RestClientController {
 	@Autowired
 	IServiceGestionConseiller serviceConseiller;
 
+import org.formation.spring.dto.BeanClient;
+import org.formation.spring.entity.Client;
+
+import org.formation.spring.service.ServiceGestionClient;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class RestClientController {
+
+	@Autowired
+	private ServiceGestionClient servCl;
+
+
 	@GetMapping(value = "/clients", produces = "application/json")
 	public List<BeanClient> getAllclient() {
 		List<Client> lC = servCl.listClients();
+
 		ArrayList<BeanClient> lbc = new ArrayList<BeanClient>();
 		int i = 0;
 		System.out.println("dans getAllClient");
+
+
+		ArrayList<BeanClient> lbc = new ArrayList<BeanClient>(); int i=0;
+		System.out.println("dans getAllClient");
+		
 
 		for (Client client : lC) {
 			BeanClient bc = new BeanClient();
@@ -55,6 +76,7 @@ public class RestClientController {
 			bc.setSoldeCC(client.getCompteCourant().getSolde());
 			bc.setSoldeEp(client.getCompteEpargne().getSolde());
 			bc.setAdresse(client.getAdresse());
+
 			System.out.println("solde " + i + "  = " + bc.getSoldeCC());
 			System.out.println("client no : " + i);
 			lbc.add(bc);
@@ -145,32 +167,21 @@ public class RestClientController {
 		System.out.println("------------------"+ ep.getNumeroCompte());
 		
 		
-		
-	//c.setConseiller(servCl.findClient(0).getConseiller());
-		
-		
-
-
-
-
-		// client.setConseiller(conseiller);
-		// client.setConseiller(serviceConseiller.findConseiller(beanCl.getIdcons()));
-
-
-		// System.out.println("" +client.getEmail());
-
-		// (new
-		// Client(beanCl.getNom(),beanCl.getPrenom(),null,null,beanCl.getEmail(),beanCl.getAdresse()),
-		// beanCl.getIdcons())
-		// System.out.println(beanCl);
 
 		boolean flag = false;
 
 
 		return HttpStatus.OK;
 
-		// HttpHeaders headers = new HttpHeaders();
-		// headers.setLocation(builder.path("/article?id={id}").buildAndExpand(article.getArticleId()).toUri());
-		// return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
+		
 	}
+
+			System.out.println("solde "+i+"  = "+bc.getSoldeCC());
+			System.out.println("client no : "+i);
+			lbc.add(bc);i++;
+		}
+		System.out.println("list beans : "+lbc);
+		return lbc;
+	}
+
 }

@@ -5,7 +5,9 @@ import java.util.List;
 
 import org.formation.spring.dto.BeanOperation;
 import org.formation.spring.entity.Operation;
+
 import org.formation.spring.service.IServiceGestionClient;
+
 import org.formation.spring.service.IServiceOperation;
 import org.formation.spring.service.ServiceGestionClient;
 import org.slf4j.Logger;
@@ -21,10 +23,10 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
 public class RestOperationController {
+
 	private static final Logger LOGGER = LoggerFactory.getLogger(ServiceGestionClient.class);
 	@Autowired
 	private IServiceOperation serviceOperation;
-	
 	
 
 	/**
@@ -59,9 +61,9 @@ public class RestOperationController {
 			beanVir.setEtat(virement.getEtat());
 			beanVir.setTypeOper(virement.getType());
 			beanVir.setMontant(virement.getMontant());
+
 			System.out.println(beanVir);
 			listJson.add(beanVir);
-			
 
 		}
 
@@ -92,5 +94,5 @@ public class RestOperationController {
 //	   headers.setLocation(builder.path("/article?id={id}").buildAndExpand(article.getArticleId()).toUri());
 //	   return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
 	} 
-	
+
 }

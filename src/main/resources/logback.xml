@@ -3,10 +3,16 @@
 <configuration scan="true" scanPeriod="30 seconds">
 
 <!-- 	<property name="LOG_HOME" value="c:/logs" /> -->
+
 	<property name="LOG_HOME" value="/home/yann/datas/bin/tmp/logs" />
 	<!-- <property name="LOG_HOME" value="/proxiBanq final/gtm/7118/ProxiBanqueV4_HS_NTH" /> -->
 	
 <!--  	<property name="LOG_HOME" value="/Users/NTH/Documents/workspace-sts-3.9.2.RELEASE/ProxiBanqueV4_HS_NTH" /> -->
+
+<!-- 	<property name="LOG_HOME" value="/home/yann/datas/bin/tmp/logs" /> -->
+	<!-- <property name="LOG_HOME" value="/proxiBanq final/gtm/7118/ProxiBanqueV4_HS_NTH" /> -->
+	
+
 
 	<appender name="console" class="ch.qos.logback.core.ConsoleAppender">
 		<encoder>
