@@ -19,9 +19,9 @@ import javax.persistence.OneToOne;
 @Entity
 @DiscriminatorValue(value = "COMPTE_COURANT")
 public class CompteCourant extends Compte {
-	@Id
+	/*@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private int id;
+	private int id;*/
 
 	 public CarteBancaire getCarteBancaire() {
 		return carteBancaire;
@@ -51,11 +51,11 @@ public class CompteCourant extends Compte {
 	
 
 	public CompteCourant(String numeroCompte, double solde) {
-		super(numeroCompte, solde);
+		super(solde);
 	}
 
-	public CompteCourant(String numCompte,double solde, String numCarte, double autorisationDecouvert) {
-		super(numCompte,solde);
+	public CompteCourant(double solde, String numCarte, double autorisationDecouvert) {
+		super(solde);
 		// this.carteBancaire = carteBancaire;
 		this.autorisationDecouvert = autorisationDecouvert;
 		this.setCarteBancaire(new VisaElectron(numCarte));
@@ -92,7 +92,8 @@ public class CompteCourant extends Compte {
 
 	@Override
 	public String toString() {
-		return "CompteCourant [id=" + id + super.toString()+ ", carteBancaire=" +  ", autorisationDecouvert="
+		return "CompteCourant ["
+				+ super.toString()+ ", carteBancaire=" +  ", autorisationDecouvert="
 				+ autorisationDecouvert + "]";
 	}
 

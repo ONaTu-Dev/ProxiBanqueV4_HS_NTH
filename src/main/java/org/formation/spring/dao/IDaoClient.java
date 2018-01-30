@@ -16,9 +16,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 public interface IDaoClient extends JpaRepository<Client,Integer> {
 	
-	
-	
 	List<Client> findAllClientByConseillerId(int idConseiller);
+	List<Client> findAllClientByNomIgnoreCase (String nom);
+	List<Client> findAllClientByPrenomIgnoreCase (String prenom);
 	
 
 }

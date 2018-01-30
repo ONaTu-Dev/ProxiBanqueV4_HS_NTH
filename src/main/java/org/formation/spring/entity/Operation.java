@@ -15,19 +15,22 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "operation")
-@NamedQueries({ @NamedQuery(name = "findAllVirements", query = "select m from Virement m"),
-	 @NamedQuery(name = "findVirementByClientId", query = "select m from Virement m join m.client c where c.id = :clientid") })
-public class Virement {
+@NamedQueries({	@NamedQuery(name = "findAllVirements", query = "select m from Operation m"),
+	//@NamedQuery(name = "findByDateAfter", query = "select m from Operation m where m.date >= :datedebut"),
+	@NamedQuery(name = "findVirementByClientId", query = "select m from Operation m join m.client c where c.id = :clientid") })
+public class Operation {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
-	 @ManyToOne(cascade = { CascadeType.PERSIST,CascadeType.REMOVE })
+	 @ManyToOne(cascade = {CascadeType.REMOVE,CascadeType.MERGE})
 	 @JoinColumn(name = "id_client")
 	 private Client client;
-	//private int idclient;
+
 	private Date date;
 	private int idcomptedepart;
 	private int idcomptecible;
+	private String numcomptedepart;
+	private String numcomptecible;
 	private double montant;
 	private String etat;
 	private String type;
@@ -46,25 +49,19 @@ public class Virement {
 	 * @param idcomptedepart
 	 * @param idcomptecible
 	 */
-	public Virement( double montant, Date date, int idcomptedepart, int idcomptecible, String etat, String type) {
+	public Operation( double montant, Date date, int idcomptedepart, int idcomptecible, String numdep, String numcib, String etat, String type) {
 		this.date = date;
 		this.montant=montant;
 		this.idcomptedepart = idcomptedepart;
 		this.idcomptecible = idcomptecible;
+		this.numcomptedepart=numdep;
+		this.numcomptecible=numcib;
 		this.etat = etat;
 		this.type=type;
 	}
 
-	public Virement() {
+	public Operation() {
 		// TODO Auto-generated constructor stub
-	}
-
-	public int getIdCompteDepart() {
-		return this.idcomptedepart;
-	}
-
-	public int getIdCompteCible() {
-		return this.idcomptedepart;
 	}
 
 	public Double getMontant() {
@@ -188,6 +185,22 @@ public class Virement {
 		this.client=client;
 		// TODO Auto-generated method stub
 		
+	}
+
+	public String getNumcomptedepart() {
+		return numcomptedepart;
+	}
+
+	public void setNumcomptedepart(String numcomptedepart) {
+		this.numcomptedepart = numcomptedepart;
+	}
+
+	public String getNumcomptecible() {
+		return numcomptecible;
+	}
+
+	public void setNumcomptecible(String numcomptecible) {
+		this.numcomptecible = numcomptecible;
 	}
 	
 

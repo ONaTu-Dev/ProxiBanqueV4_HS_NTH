@@ -104,6 +104,12 @@ public class ServiceGestionClient implements IServiceGestionClient {
 	 * @param Client
 	 */
 
+	public void addCompte(int idClient, Compte compte)
+	{
+		Client client = daoClient.getOne(idClient);
+		compte.setClient(client);
+		daoCompte.save(compte);
+	}
 	public void addCompteToClient(int idClient, Compte compte) {
 		Client client = daoClient.getOne(idClient);
 		if (CompteCourant.class.isAssignableFrom(compte.getClass())) {
@@ -113,6 +119,7 @@ public class ServiceGestionClient implements IServiceGestionClient {
 			cc.setClient(client);
 			LOGGER.debug("-------save compte-----");
 			daoCompte.save(cc);
+			
 
 		}
 		if (CompteEpargne.class.isAssignableFrom(compte.getClass())) {
@@ -141,7 +148,7 @@ public class ServiceGestionClient implements IServiceGestionClient {
 		CompteCourant c = null;
 		for (Compte cpte : list) {
 			if (CompteCourant.class.isAssignableFrom(cpte.getClass()))
-				;
+	
 			{
 				c = (CompteCourant) cpte;
 			}
@@ -156,13 +163,20 @@ public class ServiceGestionClient implements IServiceGestionClient {
 		List<Compte> list = this.listCompteByClientId(id);
 		CompteEpargne c = null;
 		for (Compte cpte : list) {
-			if (CompteCourant.class.isAssignableFrom(cpte.getClass()))
-				;
+			if (CompteEpargne.class.isAssignableFrom(cpte.getClass()))
+				
 			{
 				c = (CompteEpargne) cpte;
 			}
 		}
 		return c;
+	}
+	public List<Client> findAllClientByNom(String nom){
+		return daoClient.findAllClientByNomIgnoreCase(nom);
+	}
+
+	public List<Client> findAllClientByPrenom(String prenom){
+		return daoClient.findAllClientByPrenomIgnoreCase(prenom);
 	}
 
 }
