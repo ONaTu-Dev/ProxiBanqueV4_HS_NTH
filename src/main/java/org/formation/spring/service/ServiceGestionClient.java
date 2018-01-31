@@ -19,15 +19,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
- *  Classe qui regroupe tous les traitements concernant un Conseiller courrant.
- * 		- Ajouter un Client
- * 		- Recuperer un Client par son ID, lire toutes ces informations (data)
- * 		- Modifier un Client
- * 		- Supprimer un Client
- * 		- Lister tous les Client dans persistence
+ * Classe qui regroupe tous les traitements concernant un Conseiller courrant. -
+ * Ajouter un Client - Recuperer un Client par son ID, lire toutes ces
+ * informations (data) - Modifier un Client - Supprimer un Client - Lister tous
+ * les Client dans persistence
  * 
  * 
- * DaoClient est injecte ici pour Chercher ou Modifier l'information dans persistance
+ * DaoClient est injecte ici pour Chercher ou Modifier l'information dans
+ * persistance
  * 
  * @author NTH
  *
@@ -41,18 +40,21 @@ public class ServiceGestionClient implements IServiceGestionClient {
 	@Autowired
 	private IDaoCompte daoCompte;
 	@Autowired
-	private IDaoConseiller daoConseiller;   
+	private IDaoConseiller daoConseiller;
 
 	public ServiceGestionClient() {
 		// TODO Auto-generated constructor stub
 	}
 
 	/**
-	 * methode de persister un client d'un conseiller defini par son id dans la base de donnee
-	 * @param Client, idConseiller
+	 * methode de persister un client d'un conseiller defini par son id dans la base
+	 * de donnee
+	 * 
+	 * @param Client,
+	 *            idConseiller
 	 */
-	
-	public boolean addClientToConseiller(Client c,int idConseiller) {
+
+	public boolean addClientToConseiller(Client c, int idConseiller) {
 		Conseiller conseiller = daoConseiller.getOne(idConseiller);
 		LOGGER.debug("--------Add client to list---------");
 		c.setConseiller(conseiller);
@@ -62,21 +64,26 @@ public class ServiceGestionClient implements IServiceGestionClient {
 		return true;
 	}
 
-
-
 	/**
-	 * methode de modifier les informations concernant l'adressee d'un client et persiste dans la base
+	 * methode de modifier les informations concernant l'adressee d'un client et
+	 * persiste dans la base
+	 * 
 	 * @param Client
 	 */
-	public void updateClient(int id, Adresse adress) {
-		Client client = daoClient.getOne(id);
-		client.setAdresse(adress);
+	public void updateClient(int id, Adresse adress, String nom, String prenom,String email) {
+		Client client = daoClient.findOne(id);
+		client.affiche();
+		if (adress!=null) client.setAdresse(adress);
+		if (nom!=null) client.setNom(nom);
+		if (prenom!=null) client.setPrenom(prenom);
+		if (email!=null) client.setEmail(email);
 		daoClient.save(client);
 
 	}
 
 	/**
 	 * methode de trouver un client grace a son id fournit
+	 * 
 	 * @param Client
 	 */
 	public Client findClient(int id) {
@@ -84,7 +91,8 @@ public class ServiceGestionClient implements IServiceGestionClient {
 	}
 
 	/**
-	 * methode de lister tous les clients 
+	 * methode de lister tous les clients
+	 * 
 	 * @param Client
 	 */
 	public List<Client> listClients() {
@@ -93,6 +101,7 @@ public class ServiceGestionClient implements IServiceGestionClient {
 
 	/**
 	 * methode de lister tous les clients d'un conseiller
+	 * 
 	 * @param Client
 	 */
 	public List<Client> listClientsByConseiller(int idConseiller) {
@@ -100,16 +109,18 @@ public class ServiceGestionClient implements IServiceGestionClient {
 	}
 
 	/**
-	 * methode d'ajouter un compte soit compte courant, soit compte epargne au client donne
+	 * methode d'ajouter un compte soit compte courant, soit compte epargne au
+	 * client donne
+	 * 
 	 * @param Client
 	 */
 
-	public void addCompte(int idClient, Compte compte)
-	{
+	public void addCompte(int idClient, Compte compte) {
 		Client client = daoClient.getOne(idClient);
 		compte.setClient(client);
 		daoCompte.save(compte);
 	}
+
 	public void addCompteToClient(int idClient, Compte compte) {
 		Client client = daoClient.getOne(idClient);
 		if (CompteCourant.class.isAssignableFrom(compte.getClass())) {
@@ -119,7 +130,6 @@ public class ServiceGestionClient implements IServiceGestionClient {
 			cc.setClient(client);
 			LOGGER.debug("-------save compte-----");
 			daoCompte.save(cc);
-			
 
 		}
 		if (CompteEpargne.class.isAssignableFrom(compte.getClass())) {
@@ -133,50 +143,65 @@ public class ServiceGestionClient implements IServiceGestionClient {
 
 	/**
 	 * methode de lister tous les comptes possedes par un client dont id bien donnee
+	 * 
 	 * @param Client
 	 */
 	public List<Compte> listCompteByClientId(int id) {
 		return daoCompte.findAllCompteByClientId(id);
 	}
-	
+
 	/**
-	 * methode de chercher et trouver un compte courant d'un client dont id bien donnee
-	 * @param id client
+	 * methode de chercher et trouver un compte courant d'un client dont id bien
+	 * donnee
+	 * 
+	 * @param id
+	 *            client
 	 */
 	public CompteCourant findCompteCourantByClientId(int id) {
 		List<Compte> list = this.listCompteByClientId(id);
 		CompteCourant c = null;
 		for (Compte cpte : list) {
 			if (CompteCourant.class.isAssignableFrom(cpte.getClass()))
-	
+
 			{
 				c = (CompteCourant) cpte;
 			}
 		}
 		return c;
 	}
+
 	/**
-	 * methode de chercher et trouver le compte epargne possede par un client dont id bien donnee
-	 * @param id client
+	 * methode de chercher et trouver le compte epargne possede par un client dont
+	 * id bien donnee
+	 * 
+	 * @param id
+	 *            client
 	 */
 	public CompteEpargne findCompteEpargneByClientId(int id) {
 		List<Compte> list = this.listCompteByClientId(id);
 		CompteEpargne c = null;
 		for (Compte cpte : list) {
 			if (CompteEpargne.class.isAssignableFrom(cpte.getClass()))
-				
+
 			{
 				c = (CompteEpargne) cpte;
 			}
 		}
 		return c;
 	}
-	public List<Client> findAllClientByNom(String nom){
+
+	public List<Client> findAllClientByNom(String nom) {
 		return daoClient.findAllClientByNomIgnoreCase(nom);
 	}
 
-	public List<Client> findAllClientByPrenom(String prenom){
+	public List<Client> findAllClientByPrenom(String prenom) {
 		return daoClient.findAllClientByPrenomIgnoreCase(prenom);
 	}
 
+	public void deleteClient(int idClient) {
+		
+		daoClient.delete(daoClient.findOne(idClient));
+		LOGGER.debug("-------Client deleted -------");
+
+	}
 }

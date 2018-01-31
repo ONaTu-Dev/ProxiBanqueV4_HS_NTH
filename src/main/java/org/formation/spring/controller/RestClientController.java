@@ -24,6 +24,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -40,33 +41,12 @@ public class RestClientController {
 	@Autowired
 	IServiceGestionConseiller serviceConseiller;
 
-import org.formation.spring.dto.BeanClient;
-import org.formation.spring.entity.Client;
-
-import org.formation.spring.service.ServiceGestionClient;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-@RestController
-public class RestClientController {
-
-	@Autowired
-	private ServiceGestionClient servCl;
-
-
 	@GetMapping(value = "/clients", produces = "application/json")
 	public List<BeanClient> getAllclient() {
 		List<Client> lC = servCl.listClients();
-
 		ArrayList<BeanClient> lbc = new ArrayList<BeanClient>();
 		int i = 0;
 		System.out.println("dans getAllClient");
-
-
-		ArrayList<BeanClient> lbc = new ArrayList<BeanClient>(); int i=0;
-		System.out.println("dans getAllClient");
-		
 
 		for (Client client : lC) {
 			BeanClient bc = new BeanClient();
@@ -76,7 +56,6 @@ public class RestClientController {
 			bc.setSoldeCC(client.getCompteCourant().getSolde());
 			bc.setSoldeEp(client.getCompteEpargne().getSolde());
 			bc.setAdresse(client.getAdresse());
-
 			System.out.println("solde " + i + "  = " + bc.getSoldeCC());
 			System.out.println("client no : " + i);
 			lbc.add(bc);
@@ -137,51 +116,73 @@ public class RestClientController {
 		return bc;
 	}
 
-	@PostMapping(value = "/clientPost", produces = "application/json")
-	public HttpStatus addOperation(@RequestBody BeanClient beanCl, UriComponentsBuilder builder) {
+	@PostMapping(value = "/clientPost", produces = "application/json;charset=utf-8")
+	public HttpStatus addclient(@RequestBody BeanClient beanCl, UriComponentsBuilder builder) {
 
-		System.err.println("bean recu " + beanCl);
+		System.out.println("*****************bean recu " + beanCl.toString());
 		
 		//Client c = new Client(beanCl.getNom(),beanCl.getPrenom(),null,null);
 		Client c= new Client();
-		c.setAdresse(beanCl.getAdresse());
+		Adresse a= new Adresse(beanCl.getAdresseline(), beanCl.getCodepostal(), beanCl.getVille(), beanCl.getTelephone());
+		c.setAdresse(a);
 		c.setNom(beanCl.getNom());
 		c.setPrenom(beanCl.getPrenom());
 		c.setEmail(beanCl.getEmail());
-		System.out.println("************** client 0 : "+c);
+		c.affiche();
+		servCl.addClientToConseiller(c, 5);
 		
+		CompteCourant cc = new CompteCourant(); 
+		cc.setSolde(beanCl.getSoldeCC());
 //		c.setCompteCourant(new CompteCourant(beanCl.getNumCompteCourant(),beanCl.getSoldeCC()));
 //		c.setCompteEpargne(new CompteEpargne(beanCl.getNumCompteEpargne(),beanCl.getSoldeEp()));
-		CompteCourant cc = new CompteCourant(beanCl.getNumCompteCourant(),beanCl.getSoldeCC()); 
-		//cc.setSolde(beanCl.getSoldeCC());
 		
+		CompteEpargne ep = new CompteEpargne(); 
+		ep.setSolde(beanCl.getSoldeEp());
 		
-		CompteEpargne ep = new CompteEpargne(beanCl.getNumCompteEpargne(),beanCl.getSoldeEp()); 
-		// ep.setSolde(beanCl.getSoldeEp());
-		servCl.addClientToConseiller(c, 5);
+		System.out.println("********Ajouter compte*******************");
+		cc.setAutorisationDecouvert(1000);
+		ep.setTauxRemuneration(0.03);
 		servCl.addCompte(c.getId(), cc);
 		servCl.addCompte(c.getId(), ep);
 		
-		System.out.println("-------"+ c.getCompteCourant().getNumeroCompte());
-		System.out.println("------------------"+ cc.getNumeroCompte());
-		System.out.println("------------------"+ ep.getNumeroCompte());
 		
 		
-
-		boolean flag = false;
-
+		System.out.println("*****Client ajouté********");
+		
 
 		return HttpStatus.OK;
 
 		
 	}
+	
+	
+	@PostMapping(value = "/clientUpdate", produces = "application/json")
+	public HttpStatus updateclient(@RequestBody BeanClient beanCl, UriComponentsBuilder builder) {
 
-			System.out.println("solde "+i+"  = "+bc.getSoldeCC());
-			System.out.println("client no : "+i);
-			lbc.add(bc);i++;
+		System.out.println("*****************bean recu " + beanCl.toString());
+		Adresse a=null;
+		if ((beanCl.getAdresseline()!=null)
+				&&(beanCl.getVille()!=null)
+				&&(beanCl.getTelephone()!=null)){
+			 a=new Adresse(beanCl.getAdresseline(), beanCl.getCodepostal(), beanCl.getVille(), beanCl.getTelephone());
 		}
-		System.out.println("list beans : "+lbc);
-		return lbc;
-	}
 
+		servCl.updateClient(beanCl.getId(), a, beanCl.getNom(),beanCl.getPrenom(),beanCl.getEmail());
+		
+		
+		
+		System.out.println("*****Client MAJ********");
+		
+
+		return HttpStatus.OK;
+
+		
+	}
+	@DeleteMapping(value = "/clientDel/{id}", produces = "application/json")
+	public ResponseEntity<Void> deleteClient(@RequestParam("id") String id) {
+	servCl.deleteClient(Integer.parseInt(id));
+		
+		return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+	} 
+	
 }

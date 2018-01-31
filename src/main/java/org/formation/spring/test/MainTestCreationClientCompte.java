@@ -29,6 +29,11 @@ public class MainTestCreationClientCompte {
 		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(ProxiBanqueConfig.class);
 		System.out.println("TTTTTTTTTTTTTTTTTTTTTTTT");
 	
+		
+		
+		
+		
+		
 		IServiceGestionClient serviceGestionClient = context.getBean("serviceClient", ServiceGestionClient.class);
 		IServiceGestionConseiller gerantService = context.getBean("gerantService", ServiceGestionConseiller.class);
 	
@@ -102,7 +107,12 @@ public class MainTestCreationClientCompte {
 		serviceGestionClient.addCompteToClient(c2.getId(), ep2);
 		serviceGestionClient.addCompteToClient(c3.getId(), ep3);
 		serviceGestionClient.addCompteToClient(c4.getId(), ep4);
-
+		
+//		CompteCourant cc =serviceGestionClient.findCompteCourantByClientId(7);
+//		CompteEpargne ep =serviceGestionClient.findCompteEpargneByClientId(7);
+//	//	System.out.println(cc);
+		
+//		System.out.println(ep);
 		
 		
 		for(Client c5 :serviceGestionClient.listClientsByConseiller(3)){

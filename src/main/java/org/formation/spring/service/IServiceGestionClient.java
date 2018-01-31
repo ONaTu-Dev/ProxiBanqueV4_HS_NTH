@@ -25,7 +25,7 @@ public interface IServiceGestionClient {
 
 	public List<Client> listClientsByConseiller(int id);
 
-	public void updateClient(int id, Adresse adress);
+	public void updateClient(int id, Adresse adress, String nom, String prenom, String email);
 
 	public void addCompteToClient(int idClient, Compte compte);
 
@@ -40,4 +40,6 @@ public interface IServiceGestionClient {
 	public List<Client> findAllClientByPrenom(String prenom);
 
 	public void addCompte(int idClient, Compte compte);
+
+	public void deleteClient(int idClient);
 }
